@@ -24,7 +24,7 @@ public class TokenService {
             var algoritm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("API TaskFlow")
-                    .withSubject(user.getName())
+                    .withSubject(user.getLogin())
                     .withExpiresAt(fechaExpiracion())
                     .sign(algoritm);
         } catch (JWTCreationException exception) {

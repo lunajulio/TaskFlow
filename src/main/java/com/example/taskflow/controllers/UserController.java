@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-@SecurityRequirement(name = "bearer-key")
 public class UserController {
 
     @Autowired
@@ -22,8 +21,14 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<DataResponseUser> registerUser(@RequestBody @Valid DataRegisterUser dataRegisterUser) {
-        User user = userService.registerUser(dataRegisterUser);
-        return ResponseEntity.ok(new DataResponseUser(user));
+        try {
+            User user = userService.registerUser(dataRegisterUser);
+            System.out.println("Usuario registrado exitosamente: " + user.getId());
+            return ResponseEntity.ok(new DataResponseUser(user));
+        } catch (Exception e) {
+            System.err.println("Error en UserController: " + e.getMessage());
+            throw e;
+        }
     }
 
     @ExceptionHandler(RuntimeException.class)
